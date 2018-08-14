@@ -26,7 +26,9 @@ class GS:
         """
         # create the outfn from the srcfn by appending the output device extension.
         if outfn is None:
-            outfn = srcfn + DEVICE_EXTENSIONS[device]
+            outfn = os.path.splitext(srcfn)[0] + DEVICE_EXTENSIONS[device]
+            if outfn == srcfn:
+                outfn += DEVICE_EXTENSIONS[device]
         # normalize the output filename
         outfn = os.path.normpath(os.path.abspath(outfn))  # normalize path
         # make sure the output directory exists
@@ -89,7 +91,7 @@ class GS:
             subprocess.check_output(callargs)
         except subprocess.CalledProcessError as e:
             log.error(callargs)
-            log.error(str(e.output, 'utf-8'))
+            log.error(e.output)
 
         output_filenames = sorted(glob(re.sub(r'%\d+d', '*', outfn)))
         return output_filenames

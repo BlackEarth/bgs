@@ -22,7 +22,7 @@ class GS:
         res = the output resolution. Recommend 600 dpi or higher.
         alpha = the number of bits to use for the alpha value.
         quality = the jpeg quality: 100 = highest.
-        pages = how many pages of output to write, starting from the first one; None = all pages.
+        allpages = whether to output all pages. If not True, only the first page.
         """
         # create the outfn from the srcfn by appending the output device extension.
         if outfn is None:

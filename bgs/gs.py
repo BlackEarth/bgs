@@ -1,5 +1,6 @@
 import logging, os, re, sys, subprocess
 from glob import glob
+from bmagick import Magick
 
 log = logging.getLogger(__name__)
 
@@ -14,7 +15,18 @@ class GS:
     def __repr__(self):
         return "GS(%r)" % self.gs
 
-    def render(self, srcfn, outfn=None, device='jpeg', res=600, alpha=4, quality=90, allpages=True):
+    def render(
+        self,
+        srcfn,
+        outfn=None,
+        device='jpeg',
+        res=600,
+        alpha=4,
+        quality=90,
+        allpages=True,
+        mogrify=None,
+        magick_cmd=None,
+    ):
         """use ghostscript to render output file(s) from the PDF
         srcfn = the absolute system path of the source file
         outfn = the absolute system path of the output file; if None, based on srcfn and device
@@ -23,6 +35,8 @@ class GS:
         alpha = the number of bits to use for the alpha value.
         quality = the jpeg quality: 100 = highest.
         allpages = whether to output all pages. If not True, only the first page.
+        mogrify=None: if {...}, these are parameters to pass to Magick.mogrify()
+        mogrify_cmd=None: the commandline command to use for mogrify, if any
         """
         # create the outfn from the srcfn by appending the output device extension.
         if outfn is None:
@@ -94,6 +108,12 @@ class GS:
             log.error(e.output)
 
         output_filenames = sorted(glob(re.sub(r'%\d+d', '*', outfn)))
+        
+        if mogrify is not None:
+            magick = Magick(cmd=magick_cmd)
+            for filename in output_filenames:
+                magick.mogrify(filename, **mogrify)
+        
         return output_filenames
 
 

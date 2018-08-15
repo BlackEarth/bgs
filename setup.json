@@ -1,20 +1,20 @@
 {
   "name": "bgs",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Ghostscript (gs) interface",
   "url": "https://github.com/BlackEarth/bgs",
   "author": "Sean Harrison",
   "author_email": "sah@bookgenesis.com",
   "license": "MPL 2.0",
   "classifiers": [
-    "Development Status :: 1 - Planning",
+    "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
     "License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)",
     "Programming Language :: Python :: 2",
     "Programming Language :: Python :: 3"
   ],
   "entry_points": {},
-  "install_requires": [],
+  "install_requires": ["bmagick"],
   "extras_require": {
     "dev": ["twine"],
     "test": []

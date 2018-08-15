@@ -6,12 +6,12 @@ log = logging.getLogger(__name__)
 
 
 class GS:
-    def __init__(self, gs=None, magick_cmd=None):
+    def __init__(self, gs=None, magick=None):
         """initialise the GS object.
         gs = the system 'gs' command
         """
         self.gs = gs or 'gs'
-        self.magick_cmd = magick_cmd
+        self.magick = magick
 
     def __repr__(self):
         return "GS(%r)" % self.gs
@@ -26,7 +26,7 @@ class GS:
         quality=90,
         allpages=True,
         mogrify=None,
-        magick_cmd=None,
+        magick=None,
     ):
         """use ghostscript to render output file(s) from the PDF
         srcfn = the absolute system path of the source file
@@ -37,7 +37,7 @@ class GS:
         quality = the jpeg quality: 100 = highest.
         allpages = whether to output all pages. If not True, only the first page.
         mogrify=None: if {...}, these are parameters to pass to Magick.mogrify()
-        magick_cmd=None: the commandline command to use for mogrify, if any
+        magick=None: the commandline command to use for mogrify, if any
         """
         # create the outfn from the srcfn by appending the output device extension.
         if outfn is None:
@@ -111,9 +111,9 @@ class GS:
         output_filenames = sorted(glob(re.sub(r'%\d+d', '*', outfn)))
         
         if mogrify is not None:
-            magick = Magick(cmd=magick_cmd or self.magick_cmd)
+            im = Magick(cmd=magick or self.magick)
             for filename in output_filenames:
-                magick.mogrify(filename, **mogrify)
+                im.mogrify(filename, **mogrify)
         
         return output_filenames
 

@@ -6,11 +6,12 @@ log = logging.getLogger(__name__)
 
 
 class GS:
-    def __init__(self, gs=None):
+    def __init__(self, gs=None, magick_cmd=None):
         """initialise the GS object.
         gs = the system 'gs' command
         """
         self.gs = gs or 'gs'
+        self.magick_cmd = magick_cmd
 
     def __repr__(self):
         return "GS(%r)" % self.gs
@@ -36,7 +37,7 @@ class GS:
         quality = the jpeg quality: 100 = highest.
         allpages = whether to output all pages. If not True, only the first page.
         mogrify=None: if {...}, these are parameters to pass to Magick.mogrify()
-        mogrify_cmd=None: the commandline command to use for mogrify, if any
+        magick_cmd=None: the commandline command to use for mogrify, if any
         """
         # create the outfn from the srcfn by appending the output device extension.
         if outfn is None:
@@ -110,7 +111,7 @@ class GS:
         output_filenames = sorted(glob(re.sub(r'%\d+d', '*', outfn)))
         
         if mogrify is not None:
-            magick = Magick(cmd=magick_cmd)
+            magick = Magick(cmd=magick_cmd or self.magick_cmd)
             for filename in output_filenames:
                 magick.mogrify(filename, **mogrify)
         

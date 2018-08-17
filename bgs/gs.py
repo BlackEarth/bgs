@@ -102,7 +102,7 @@ class GS:
         callargs += ['-sOutputFile=%s' % outfn, srcfn]
 
         log.debug(callargs)
-        subprocess.check_output(callargs)
+        subprocess.check_output(callargs, stderr=subprocess.STDOUT)
 
         output_filenames = sorted(glob(re.sub(r'%\d+d', '*', outfn)))
         

@@ -148,3 +148,11 @@ DEVICE_EXTENSIONS = {
     'psdcmyk': '.psd',
     'pdfwrite': '.pdf',
 }
+
+if __name__=='__main__':
+    gs = GS()
+    magick = Magick(cmd='gm')
+    for pdffn in sys.argv[1:]:
+        outfns = gs.render(pdffn, device='png16m')
+        for outfn in outfns:
+            magick.mogrify(outfn, trim="")
